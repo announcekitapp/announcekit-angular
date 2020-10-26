@@ -45,7 +45,7 @@ app.component.html
 Common props you may want to specify include:
 
 - **`widget`** - The url of the widget. You can obtain it while creating or editing widget in AnnounceKit Dashboard.
-- `style` - You can apply CSS rules to modify / tune the position of the widget.
+- `widgetStyle` - You can apply CSS rules to modify / tune the position of the widget.
 - `floatWidget` - Set true if the widget is a Float widget.
 - `embedWidget` - Set true if the widget is a Embed widget.
 - `user` - User properties (for user tracking)
