@@ -3,7 +3,7 @@
 The easiest way to use AnnounceKit widgets in your Angular apps (>=4.2.0).
 
 **Visit [https://announcekit.app](https://announcekit.app) to get started with AnnounceKit.**
-[CodeSandbox Demo](https://codesandbox.io/s/announcekit-vue20-demo-jcfjf)
+[CodeSandbox Demo](https://codesandbox.io/s/announcekit-angular-u4nxq)
 
 [Documentation](https://announcekit.app/docs/angular)
 
@@ -35,9 +35,9 @@ export class AppModule { }
 
 app.component.html
 ```html
-    <announcekit [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8">
-        What's new
-    </announcekit>
+<announcekit [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8">
+    What's new
+</announcekit>
 ```
 
 ## Props
