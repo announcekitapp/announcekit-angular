@@ -1,6 +1,18 @@
 {
   "name": "announcekit-angular",
-  "version": "0.0.7",
+  "version": "1.0.1",
+  "description": "Use AnnounceKit widgets in your Angular apps",
+  "repository": "https://github.com/announcekitapp/announcekit-angular",
+  "homepage": "https://announcekit.app",
+  "keywords": [
+    "announcekit",
+    "newsfeed",
+    "changelog",
+    "widget",
+    "angular"
+  ],
+  "author": "announcekit",
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": ">=4.2.0",
     "@angular/core": ">=4.2.0"

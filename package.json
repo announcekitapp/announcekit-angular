@@ -1,20 +1,11 @@
 {
-  "name": "ngx-smart-modal-doc",
-  "version": "8.0.0",
-  "description": "Angular-CLI doc and demo of ngx-smart-modal",
+  "name": "announcekit-angular-module",
+  "version": "1.0.0",
+  "description": "announcekit",
   "license": "MIT",
   "scripts": {
-    "commit": "git-cz",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "ghpages": "npm i && ng build --prod --aot --no-progress --base-href '/ngx-smart-modal/'"
+    "publish": "ng build announcekit && cd ./dist/announcekit && npm publish"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~8.0.0",
     "@angular/common": "~8.0.0",
