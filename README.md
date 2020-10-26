@@ -53,5 +53,4 @@ Common props you may want to specify include:
 - `lang` - Language selector
 - `onWidgetOpen` - Called when the widget is opened.
 - `onWidgetClose` - Called when the widget is closed.
-- `onWidgetResize` - Called when the widget is resized.
 - `onWidgetUnread` - Called when unread post count of widget has been updated.

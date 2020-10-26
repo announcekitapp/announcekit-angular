@@ -1,24 +1,56 @@
-# Announcekit
+![](https://announcekit.app/images/logo@2x.png)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
+The easiest way to use AnnounceKit widgets in your Angular apps (>=4.2.0).
 
-## Code scaffolding
+**Visit [https://announcekit.app](https://announcekit.app) to get started with AnnounceKit.**
+[CodeSandbox Demo](https://codesandbox.io/s/announcekit-vue20-demo-jcfjf)
 
-Run `ng generate component component-name --project announcekit` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project announcekit`.
-> Note: Don't forget to add `--project announcekit` or else it will be added to the default project in your `angular.json` file. 
+[Documentation](https://announcekit.app/docs/angular)
 
-## Build
+## Installation
 
-Run `ng build announcekit` to build the project. The build artifacts will be stored in the `dist/` directory.
+```sh
+yarn add announcekit-angular
+```
 
-## Publishing
+## Usage
 
-After building your library with `ng build announcekit`, go to the dist folder `cd dist/announcekit` and run `npm publish`.
+app.module.ts
+```ts
+import {AnnouncekitModule} from 'announcekit-angular'
 
-## Running unit tests
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    AnnouncekitModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-Run `ng test announcekit` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Further help
+app.component.html
+```html
+    <announcekit [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8">
+        What's new
+    </announcekit>
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Props
+
+Common props you may want to specify include:
+
+- **`widget`** - The url of the widget. You can obtain it while creating or editing widget in AnnounceKit Dashboard.
+- `style` - You can apply CSS rules to modify / tune the position of the widget.
+- `floatWidget` - Set true if the widget is a Float widget.
+- `embedWidget` - Set true if the widget is a Embed widget.
+- `user` - User properties (for user tracking)
+- `data` - Segmentation data
+- `lang` - Language selector
+- `onWidgetOpen` - Called when the widget is opened.
+- `onWidgetClose` - Called when the widget is closed.
+- `onWidgetUnread` - Called when unread post count of widget has been updated.
