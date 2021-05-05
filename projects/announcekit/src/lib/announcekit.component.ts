@@ -52,10 +52,10 @@ export class AnnouncekitComponent implements OnInit {
     if (!window['announcekit']) {
       window['announcekit'] = window['announcekit'] || {
         queue: [],
-        push: function(x:any) {
+        push: function (x: any) {
           window['announcekit'].queue.push(x);
         },
-        on: function(n: any, x:any) {
+        on: function (n: any, x: any) {
           window['announcekit'].queue.push([n, x]);
         }
       };
@@ -70,9 +70,9 @@ export class AnnouncekitComponent implements OnInit {
   }
 
   private loaded(): void {
-    let style = this.widgetStyle;
+    const style = this.widgetStyle;
 
-    let styleParams = {
+    const styleParams = {
       badge: {
         style
       },
@@ -83,6 +83,7 @@ export class AnnouncekitComponent implements OnInit {
         style
       }
     };
+
 
     if (this.floatWidget) {
       delete styleParams.badge;
@@ -102,10 +103,12 @@ export class AnnouncekitComponent implements OnInit {
       version: 2,
       framework: 'angular',
       framework_version: '4.0.0',
+      embed: !!this.embedWidget,
       data: this.data,
       user: this.user,
       lang: this.lang,
       selector: this.selector,
+      ...styleParams,
       onInit: (_widget: any) => {
         if (_widget.conf.name !== name) {
           return _widget.destroy();
@@ -115,20 +118,20 @@ export class AnnouncekitComponent implements OnInit {
 
         this.widgetInstance = _widget;
 
-        this.widgetHandlers.forEach((h:Function) => h(_widget));
+        this.widgetHandlers.forEach((h: Function) => h(_widget));
         this.widgetHandlers = [];
 
         if (this.onWidgetUnread) {
           this.unread().then((number) => this.onWidgetUnread.emit(number));
         }
 
-        ann.on('widget-open', ({widget}:any) => {
+        ann.on('widget-open', ({widget}: any) => {
           if (widget === _widget && this.onWidgetOpen) {
             this.onWidgetOpen.emit({widget});
           }
         });
 
-        ann.on('widget-close', ({widget}:any) => {
+        ann.on('widget-close', ({widget}: any) => {
           if (widget === _widget && this.onWidgetClose) {
             this.onWidgetClose.emit({widget});
           }
@@ -154,7 +157,7 @@ export class AnnouncekitComponent implements OnInit {
   }
 
 
-  isEquivalent(a:any, b:any): boolean {
+  isEquivalent(a: any, b: any): boolean {
     // Create arrays of property names
     var aProps = Object.getOwnPropertyNames(a || {});
     var bProps = Object.getOwnPropertyNames(b || {});
