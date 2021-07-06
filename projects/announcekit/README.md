@@ -48,9 +48,11 @@ Common props you may want to specify include:
 - `widgetStyle` - You can apply CSS rules to modify / tune the position of the widget.
 - `floatWidget` - Set true if the widget is a Float widget.
 - `embedWidget` - Set true if the widget is a Embed widget.
+- `boosters` - Set false if you want to disable boosters / Default: true.
 - `user` - User properties (for user tracking)
 - `data` - Segmentation data
 - `lang` - Language selector
 - `onWidgetOpen` - Called when the widget is opened.
 - `onWidgetClose` - Called when the widget is closed.
 - `onWidgetUnread` - Called when unread post count of widget has been updated.
+- `onWidgetReady` - Called when the widget is ready for the interaction
