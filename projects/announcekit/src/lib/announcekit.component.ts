@@ -210,21 +210,27 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
     let dirty = false;
 
     try {
-      if (this.isString(this.user) || this.isString(this.prevUser)) {
+      if (this.isString(this.data) || this.isString(this.prevData) || this.isString(this.user) || this.isString(this.prevUser)) {
         return;
       }
 
       if (!this.isEquivalent(this.user, this.prevUser)) {
-        this.prevUser = Object.assign({}, this.user);
+        if (!this.user) {
+          this.prevUser = undefined;
+        } else {
+          this.prevUser = Object.assign({}, this.user);
+        }
+
         dirty = true;
       }
 
-      if (this.isString(this.data) || this.isString(this.prevData)) {
-        return;
-      }
-
       if (!this.isEquivalent(this.data, this.prevData)) {
-        this.prevData = Object.assign({}, this.data);
+        if (!this.data) {
+          this.prevData = undefined;
+        } else {
+          this.prevData = Object.assign({}, this.data);
+        }
+
         dirty = true;
       }
 
