@@ -1,12 +1,24 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
     <h1>
-      Welcome to Angular
+        Welcome to Angular
     </h1>
-    <p>
-      <announcekit [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8">
+    <button (click)="getUnread()">Update Unread</button>
+
+    <button (click)="barBoosterHide()">Bar Booster Hide</button>
+
+    <announcekit
+        #announcekitComponent
+        (onWidgetReady)="ready()"
+        (onWidgetOpen)="open()"
+        [user]="user"
+        widget="https://announcekit.app/widgets/v2/1IO7MQ"
+    >
         What's new
-      </announcekit>
+    </announcekit>
+
+    <span>Unread counter: {{unread}}</span>
+
+    <p>
     </p>
 </div>
-  
