@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, DoCheck
+  Component, OnInit, Input, Output, EventEmitter, DoCheck, NgZone
 } from '@angular/core';
 
 interface User {
@@ -36,13 +36,16 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
   private name: string;
   public className: string;
 
-  private widgetInstance: any;
+  public widgetInstance: any;
   public widgetHandlers: any[] = [];
 
   private prevUser: User;
   private prevData: Data;
 
-  constructor() {
+  public barBooster: any;
+  public modalBooster: any;
+
+  constructor(private ngZone: NgZone) {
     this.selector = `.ak-${Math.random()
       .toString(36)
       .substring(10)}`;
@@ -51,26 +54,28 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
 
     this.className = this.selector.slice(1);
 
-    if (!window[`announcekit`]) {
-      window[`announcekit`] = window[`announcekit`] || {
-        queue: [],
-        push(x: any) {
-          window[`announcekit`].queue.push(x);
-        },
-        on(n: any, x: any) {
-          window[`announcekit`].queue.push([n, x]);
-        }
-      };
+    this.ngZone.runOutsideAngular(() => {
+      if (!window[`announcekit`]) {
+        window[`announcekit`] = window[`announcekit`] || {
+          queue: [],
+          push(x: any) {
+            window[`announcekit`].queue.push(x);
+          },
+          on(n: any, x: any) {
+            window[`announcekit`].queue.push([n, x]);
+          }
+        };
 
-      let scripttag: HTMLScriptElement;
-      scripttag = document.createElement('script') as HTMLScriptElement;
-      scripttag.async = true;
-      scripttag.src = `https://cdn.announcekit.app/widget-v2.js`;
+        let scripttag: HTMLScriptElement;
+        scripttag = document.createElement('script') as HTMLScriptElement;
+        scripttag.async = true;
+        scripttag.src = `https://cdn.announcekit.app/widget-v2.js`;
 
-      let scr: HTMLScriptElement;
-      scr = document.getElementsByTagName('script')[0];
-      scr.parentNode.insertBefore(scripttag, scr);
-    }
+        let scr: HTMLScriptElement;
+        scr = document.getElementsByTagName('script')[0];
+        scr.parentNode.insertBefore(scripttag, scr);
+      }
+    });
   }
 
   private loaded(): void {
@@ -101,57 +106,64 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
       .toString(36)
       .substring(10);
 
-    window[`announcekit`].push({
-      widget: this.widget,
-      name,
-      version: 2,
-      framework: 'angular',
-      framework_version: '4.0.0',
-      embed: !!this.embedWidget,
-      data: this.data,
-      user: this.user,
-      lang: this.lang,
-      selector: this.selector,
-      boosters: typeof this.boosters === 'undefined' ? true : this.boosters,
-      ...styleParams,
-      onInit: (initWidget: any) => {
-        if (initWidget.conf.name !== name) {
-          return initWidget.destroy();
-        }
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        window[`announcekit`].push({
+          widget: this.widget,
+          name,
+          version: 2,
+          framework: 'angular',
+          framework_version: '4.0.0',
+          embed: !!this.embedWidget,
+          data: this.data,
+          user: this.user,
+          lang: this.lang,
+          selector: this.selector,
+          boosters: typeof this.boosters === 'undefined' ? true : this.boosters,
+          ...styleParams,
+          onInit: (initWidget: any) => {
+            if (initWidget.conf.name !== name) {
+              return initWidget.destroy();
+            }
 
-        const ann = window[`announcekit`];
+            const ann = window[`announcekit`];
 
-        this.widgetInstance = initWidget;
+            this.widgetInstance = initWidget;
 
-        this.widgetHandlers.forEach((h) => h(initWidget));
-        this.widgetHandlers = [];
+            this.barBooster = ann.boosters.bar;
+            this.modalBooster = ann.boosters.modal;
 
-        if (this.onWidgetUnread) {
-          this.unread().then((unreadCounter) => this.onWidgetUnread.emit(unreadCounter));
-        }
+            this.widgetHandlers.forEach((h) => h(initWidget));
+            this.widgetHandlers = [];
 
-        ann.on('widget-open', ({widget}: any) => {
-          if (widget === initWidget && this.onWidgetOpen) {
-            this.onWidgetOpen.emit({widget});
+            if (this.onWidgetUnread) {
+              this.onWidgetUnread.emit(this.widgetInstance.state.ui.unreadCount);
+            }
+
+            ann.on('widget-open', ({widget}: any) => {
+              if (widget === initWidget && this.onWidgetOpen) {
+                this.onWidgetOpen.emit({widget});
+              }
+            });
+
+            ann.on('widget-close', ({widget}: any) => {
+              if (widget === initWidget && this.onWidgetClose) {
+                this.onWidgetClose.emit({widget});
+              }
+            });
+
+            ann.on('widget-ready', ({widget}: any) => {
+              if (widget === initWidget && this.onWidgetReady) {
+                this.onWidgetReady.emit({widget});
+              }
+            });
           }
         });
-
-        ann.on('widget-close', ({widget}: any) => {
-          if (widget === initWidget && this.onWidgetClose) {
-            this.onWidgetClose.emit({widget});
-          }
-        });
-
-        ann.on('widget-ready', ({widget}: any) => {
-          if (widget === initWidget && this.onWidgetReady) {
-            this.onWidgetReady.emit({widget});
-          }
-        });
-      }
+      }, 10);
     });
   }
 
-  private withWidget(fn) {
+  withWidget(fn) {
     return new Promise(res => {
       if (this.widgetInstance) {
         return res(fn(this.widgetInstance));
@@ -168,7 +180,7 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
   }
 
 
-  isEquivalent(a: any, b: any): boolean {
+  private isEquivalent(a: any, b: any): boolean {
     // Create arrays of property names
     const aProps = Object.getOwnPropertyNames(a || {});
     const bProps = Object.getOwnPropertyNames(b || {});
@@ -192,11 +204,11 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
     return true;
   }
 
-  isObject(obj): boolean {
+  private isObject(obj): boolean {
     return obj !== undefined && obj !== null && obj.constructor === Object;
   }
 
-  isString(obj): boolean {
+  private isString(obj): boolean {
     return obj !== undefined && obj !== null && obj.constructor === String;
   }
 
