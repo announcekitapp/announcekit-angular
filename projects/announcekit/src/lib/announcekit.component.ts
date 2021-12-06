@@ -26,6 +26,8 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
   @Input() embedWidget?: boolean;
   @Input() boosters?: boolean;
   @Input() widgetStyle?: any;
+  @Input() userToken?: string;
+  @Input() labels?: [string];
 
   @Output('onWidgetOpen') onWidgetOpen = new EventEmitter<any>();
   @Output('onWidgetClose') onWidgetClose = new EventEmitter<any>();
@@ -118,6 +120,8 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
           data: this.data,
           user: this.user,
           lang: this.lang,
+          labels: this.labels,
+          user_token: this.userToken,
           selector: this.selector,
           boosters: typeof this.boosters === 'undefined' ? true : this.boosters,
           ...styleParams,
