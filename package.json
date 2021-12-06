@@ -4,7 +4,8 @@
   "description": "announcekit",
   "license": "MIT",
   "scripts": {
-    "publish": "ng build announcekit && cd ./dist/announcekit && npm publish"
+    "build": "ng build announcekit",
+    "publish": "cd ./dist/announcekit && npm publish"
   },
   "dependencies": {
     "@angular/animations": "~8.0.0",
