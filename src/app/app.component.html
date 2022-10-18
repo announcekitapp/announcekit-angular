@@ -5,14 +5,18 @@
     </h1>
     <button (click)="getUnread()">Update Unread</button>
 
-    <button (click)="barBoosterHide()">Bar Booster Hide</button>
+    <button (click)="barBoosterHide()">Bar Booster Toggle</button>
+
+    <button (click)="changeUser()">Change User</button>
+    <button (click)="changeData()">Change Data</button>
 
     <announcekit
         #announcekitComponent
         (onWidgetReady)="ready()"
         (onWidgetOpen)="open()"
         [user]="user"
-        widget="https://announcekit.app/widgets/v2/1IO7MQ"
+        [data]="data"
+        widget="https://announcekit.co/widgets/v2/2nI0Ok"
     >
         What's new
     </announcekit>

@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, DoCheck, NgZone
+  Component, Input, Output, EventEmitter, DoCheck, NgZone, AfterViewInit
 } from '@angular/core';
 
 interface User {
@@ -17,10 +17,43 @@ interface Data {
   templateUrl: './announcekit.component.html'
 })
 
-export class AnnouncekitComponent implements OnInit, DoCheck {
+export class AnnouncekitComponent implements AfterViewInit {
   @Input() widget: string;
-  @Input() data?: Data;
-  @Input() user?: User;
+  
+  @Input('user') set user(value: User) {
+    if (this.isString(value) || this.isString(this._user)){
+      this._user = undefined;
+    }
+    else {
+      if (!this.isEquivalent(this._user, value)) {
+        if (!value) {
+          this._user = undefined;
+        } else {
+          this._user = Object.assign({}, value);
+        }
+    
+        this.loaded();
+      }
+    }
+  }
+
+  @Input('data') set data(value: Data) {
+    if (this.isString(value) || this.isString(this._data)){
+      this._data = undefined;
+    }
+    else {
+      if (!this.isEquivalent(value, this._data)) {
+        if (value) {
+          this._data = undefined;
+        } else {
+          this._data = Object.assign({}, value);
+        }
+
+        this.loaded();
+      }
+    }
+  }
+
   @Input() lang?: string;
   @Input() floatWidget?: boolean;
   @Input() embedWidget?: boolean;
@@ -34,15 +67,21 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
   @Output('onWidgetUnread') onWidgetUnread = new EventEmitter<any>();
   @Output('onWidgetReady') onWidgetReady = new EventEmitter<any>();
 
+  get user(): User {
+    return this._user;
+  }
+
+  get data(): Data {
+    return this._data;
+  }
+
+  private _user: User;
+  private _data: Data;
   private selector: string;
-  private name: string;
   public className: string;
 
   public widgetInstance: any;
   public widgetHandlers: any[] = [];
-
-  private prevUser: User;
-  private prevData: Data;
 
   public barBooster: any;
   public modalBooster: any;
@@ -109,7 +148,6 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
       .substring(10);
 
     this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
         window[`announcekit`].push({
           widget: this.widget,
           name,
@@ -163,7 +201,6 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
             });
           }
         });
-      }, 10);
     });
   }
 
@@ -208,53 +245,12 @@ export class AnnouncekitComponent implements OnInit, DoCheck {
     return true;
   }
 
-  private isObject(obj): boolean {
-    return obj !== undefined && obj !== null && obj.constructor === Object;
-  }
-
   private isString(obj): boolean {
     return obj !== undefined && obj !== null && obj.constructor === String;
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     if (!(this.user || this.data)) {
-      this.loaded();
-    }
-  }
-
-  ngDoCheck(): void {
-    let dirty = false;
-
-    try {
-      if (this.isString(this.data) || this.isString(this.prevData) || this.isString(this.user) || this.isString(this.prevUser)) {
-        return;
-      }
-
-      if (!this.isEquivalent(this.user, this.prevUser)) {
-        if (!this.user) {
-          this.prevUser = undefined;
-        } else {
-          this.prevUser = Object.assign({}, this.user);
-        }
-
-        dirty = true;
-      }
-
-      if (!this.isEquivalent(this.data, this.prevData)) {
-        if (!this.data) {
-          this.prevData = undefined;
-        } else {
-          this.prevData = Object.assign({}, this.data);
-        }
-
-        dirty = true;
-      }
-
-    } catch (e) {
-      dirty = false;
-    }
-
-    if (dirty) {
       this.loaded();
     }
   }

@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {AnnouncekitModule} from 'announcekit-angular';
+import {AnnouncekitModule} from '../../projects/announcekit/src/lib/announcekit.module';
 
 @NgModule({
   declarations: [

@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AnnouncekitComponent} from 'announcekit-angular';
+import {AnnouncekitComponent} from '../../projects/announcekit/src/lib/announcekit.component';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +8,29 @@ import {AnnouncekitComponent} from 'announcekit-angular';
 export class AppComponent extends ViewChild {
   unread = 0;
 
+  show = true;
+
   @ViewChild('announcekitComponent', {static: false}) announcekitComponent: AnnouncekitComponent;
 
   user = {
     id: Date.now(),
     name: Date.now().toString(),
   };
+
+  data;
+
+  changeUser() {
+    this.user = {
+      id: Date.now(),
+      name: Date.now().toString(),
+    };
+  }
+
+  changeData() {
+    this.data = {
+      name: Date.now().toString(),
+    };
+  }
 
   public ready() {
     console.log('AnnounceKit Component Ready');
@@ -31,6 +48,13 @@ export class AppComponent extends ViewChild {
   }
 
   public barBoosterHide() {
-    this.announcekitComponent.barBooster.hide();
+    if (this.show) {
+      this.announcekitComponent.barBooster.hide();
+    }
+    else {
+      this.announcekitComponent.barBooster.show();
+    }
+
+    this.show = !this.show;
   }
 }
