@@ -1,6 +1,6 @@
 ![](https://announcekit.app/images/logo@2x.png)
 
-The easiest way to use AnnounceKit widgets in your Angular apps (>=10.0.0).
+The easiest way to use AnnounceKit widgets in your Angular apps (>=4.2.0).
 
 **Visit [https://announcekit.app](https://announcekit.app) to get started with AnnounceKit.**
 [CodeSandbox Demo](https://codesandbox.io/s/announcekit-angular-u4nxq)
