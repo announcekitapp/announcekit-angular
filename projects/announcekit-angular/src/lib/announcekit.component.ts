@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, NgZone, AfterViewInit
+  Component, Input, Output, EventEmitter, NgZone, AfterViewInit, ElementRef, ViewChild
 } from '@angular/core';
 
 interface User {
@@ -18,6 +18,8 @@ interface Data {
 })
 
 export class AnnouncekitComponent implements AfterViewInit {
+  @ViewChild('ankRef', {static: true}) elementRef: ElementRef;
+
   @Input() widget: string;
 
   @Input('user') set user(value: User) {
@@ -72,7 +74,6 @@ export class AnnouncekitComponent implements AfterViewInit {
   private propsValid: boolean = true;
   private _user: User;
   private _data: Data;
-  private selector: string;
   public className: string;
 
   public widgetInstance: any;
@@ -82,13 +83,7 @@ export class AnnouncekitComponent implements AfterViewInit {
   public modalBooster: any;
 
   constructor(private ngZone: NgZone) {
-    this.selector = `.ak-${Math.random()
-      .toString(36)
-      .substring(10)}`;
-
     this.widgetHandlers = [];
-
-    this.className = this.selector.slice(1);
 
     this.ngZone.runOutsideAngular(() => {
       if (!window[`announcekit`]) {
@@ -141,9 +136,6 @@ export class AnnouncekitComponent implements AfterViewInit {
     if (this.floatWidget) {
       delete styleParams.badge;
       delete styleParams.line;
-
-      this.selector = null;
-      this.className = null;
     }
 
     const name = Math.random()
@@ -163,7 +155,7 @@ export class AnnouncekitComponent implements AfterViewInit {
         lang: this.lang,
         labels: this.labels,
         user_token: this.userToken,
-        selector: this.selector,
+        selector: this.elementRef.nativeElement,
         boosters: typeof this.boosters === 'undefined' ? true : this.boosters,
         ...styleParams,
         onInit: (initWidget: any) => {
