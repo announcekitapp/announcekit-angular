@@ -1,66 +1,38 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "paths": {
-      "@app/services": [
-        "src/app/_services"
-      ],
-      "@app/services/*": [
-        "src/app/_services/*"
-      ],
-      "@app/modules": [
-        "src/app/_modules"
-      ],
-      "@app/modules/*": [
-        "src/app/_modules/*"
-      ],
-      "@app/directives": [
-        "src/app/_directives"
-      ],
-      "@app/directives/*": [
-        "src/app/_directives/*"
-      ],
-      "@app/models": [
-        "src/app/_models"
-      ],
-      "@app/models/*": [
-        "src/app/_models/*"
-      ],
-      "@app/pipes": [
-        "src/app/_pipes"
-      ],
-      "@app/pipes/*": [
-        "src/app/_pipes/*"
-      ],
       "announcekit-angular": [
         "dist/announcekit-angular"
-      ],
-      "announcekit-angular/*": [
-        "dist/announcekit-angular/*"
-      ],
-      "announcekit": [
-        "dist/announcekit"
-      ],
-      "announcekit/*": [
-        "dist/announcekit/*"
       ]
     },
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "strictPropertyInitialization": false,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2020",
+    "module": "es2020",
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ]
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   }
 }

@@ -1,0 +1,15 @@
+<div style="padding: 1rem;">
+	<button (click)="getUnread()">Update Unread</button>
+
+	<button (click)="barBoosterHide()">Bar Booster Toggle</button>
+
+	<button (click)="changeUser()">Change User</button>
+	<button (click)="changeData()">Change Data</button>
+
+	<announcekit #announcekitComponent (onWidgetReady)="ready()" (onWidgetOpen)="open()" [user]="user" [data]="data"
+		[embedWidget]="embedWidget" widget="https://announcekit.co/widgets/v2/2nI0Ok">
+		What's new
+	</announcekit>
+
+	<span>Unread counter: {{unread}}</span>
+</div>
