@@ -1,6 +1,6 @@
 ![](https://announcekit.app/images/logo@2x.png)
 
-The easiest way to use AnnounceKit widgets in your Angular apps (>=4.2.0).
+The easiest way to use AnnounceKit widgets in your Angular apps (>=10.0.0).
 
 **Visit [https://announcekit.app](https://announcekit.app) to get started with AnnounceKit.**
 [CodeSandbox Demo](https://codesandbox.io/s/announcekit-angular-u4nxq)
@@ -58,3 +58,18 @@ Common props you may want to specify include:
 - `onWidgetClose` - Called when the widget is closed.
 - `onWidgetUnread` - Called when unread post count of widget has been updated.
 - `onWidgetReady` - Called when the widget is ready for the interaction
+
+## API
+
+You can use ViewChild to access the widget instance and call control functions
+
+- `open()`
+- `close()`
+- `unread()`
+- `instance()`
+
+app.component.html
+```html
+<announcekit #ankRef [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8"></announcekit>
+<a @click="() => ankRef.open()">What's New</a>
+```
