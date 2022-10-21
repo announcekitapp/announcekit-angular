@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, DoCheck, NgZone, AfterViewInit
+  Component, Input, Output, EventEmitter, NgZone, AfterViewInit
 } from '@angular/core';
 
 interface User {
@@ -19,37 +19,31 @@ interface Data {
 
 export class AnnouncekitComponent implements AfterViewInit {
   @Input() widget: string;
-  
+
   @Input('user') set user(value: User) {
-    if (this.isString(value) || this.isString(this._user)){
+    if (this.isString(value) || this.isString(this._user)) {
+      this.propsValid = false;
       this._user = undefined;
     }
     else {
-      if (!this.isEquivalent(this._user, value)) {
-        if (!value) {
-          this._user = undefined;
-        } else {
-          this._user = Object.assign({}, value);
-        }
-    
-        this.loaded();
+      if (!value) {
+        this._user = undefined;
+      } else {
+        this._user = Object.assign({}, value);
       }
     }
   }
 
   @Input('data') set data(value: Data) {
-    if (this.isString(value) || this.isString(this._data)){
+    if (this.isString(value) || this.isString(this._data)) {
+      this.propsValid = false;
       this._data = undefined;
     }
     else {
-      if (!this.isEquivalent(value, this._data)) {
-        if (value) {
-          this._data = undefined;
-        } else {
-          this._data = Object.assign({}, value);
-        }
-
-        this.loaded();
+      if (value) {
+        this._data = undefined;
+      } else {
+        this._data = Object.assign({}, value);
       }
     }
   }
@@ -75,6 +69,7 @@ export class AnnouncekitComponent implements AfterViewInit {
     return this._data;
   }
 
+  private propsValid: boolean = true;
   private _user: User;
   private _data: Data;
   private selector: string;
@@ -119,6 +114,14 @@ export class AnnouncekitComponent implements AfterViewInit {
     });
   }
 
+  ngOnChanges() {
+    if (this.propsValid) {
+      this.loaded();
+    }
+
+    this.propsValid = true;
+  }
+
   private loaded(): void {
     const style = this.widgetStyle;
 
@@ -148,59 +151,59 @@ export class AnnouncekitComponent implements AfterViewInit {
       .substring(10);
 
     this.ngZone.runOutsideAngular(() => {
-        window[`announcekit`].push({
-          widget: this.widget,
-          name,
-          version: 2,
-          framework: 'angular',
-          framework_version: '4.0.0',
-          embed: !!this.embedWidget,
-          data: this.data,
-          user: this.user,
-          lang: this.lang,
-          labels: this.labels,
-          user_token: this.userToken,
-          selector: this.selector,
-          boosters: typeof this.boosters === 'undefined' ? true : this.boosters,
-          ...styleParams,
-          onInit: (initWidget: any) => {
-            if (initWidget.conf.name !== name) {
-              return initWidget.destroy();
-            }
-
-            const ann = window[`announcekit`];
-
-            this.widgetInstance = initWidget;
-
-            this.barBooster = ann.boosters.bar;
-            this.modalBooster = ann.boosters.modal;
-
-            this.widgetHandlers.forEach((h) => h(initWidget));
-            this.widgetHandlers = [];
-
-            if (this.onWidgetUnread) {
-              this.onWidgetUnread.emit(this.widgetInstance.state.ui.unreadCount);
-            }
-
-            ann.on('widget-open', ({widget}: any) => {
-              if (widget === initWidget && this.onWidgetOpen) {
-                this.onWidgetOpen.emit({widget});
-              }
-            });
-
-            ann.on('widget-close', ({widget}: any) => {
-              if (widget === initWidget && this.onWidgetClose) {
-                this.onWidgetClose.emit({widget});
-              }
-            });
-
-            ann.on('widget-ready', ({widget}: any) => {
-              if (widget === initWidget && this.onWidgetReady) {
-                this.onWidgetReady.emit({widget});
-              }
-            });
+      window[`announcekit`].push({
+        widget: this.widget,
+        name,
+        version: 2,
+        framework: 'angular',
+        framework_version: '4.0.0',
+        embed: !!this.embedWidget,
+        data: this.data,
+        user: this.user,
+        lang: this.lang,
+        labels: this.labels,
+        user_token: this.userToken,
+        selector: this.selector,
+        boosters: typeof this.boosters === 'undefined' ? true : this.boosters,
+        ...styleParams,
+        onInit: (initWidget: any) => {
+          if (initWidget.conf.name !== name) {
+            return initWidget.destroy();
           }
-        });
+
+          const ann = window[`announcekit`];
+
+          this.widgetInstance = initWidget;
+
+          this.barBooster = ann.boosters.bar;
+          this.modalBooster = ann.boosters.modal;
+
+          this.widgetHandlers.forEach((h) => h(initWidget));
+          this.widgetHandlers = [];
+
+          if (this.onWidgetUnread) {
+            this.onWidgetUnread.emit(this.widgetInstance.state.ui.unreadCount);
+          }
+
+          ann.on('widget-open', ({ widget }: any) => {
+            if (widget === initWidget && this.onWidgetOpen) {
+              this.onWidgetOpen.emit({ widget });
+            }
+          });
+
+          ann.on('widget-close', ({ widget }: any) => {
+            if (widget === initWidget && this.onWidgetClose) {
+              this.onWidgetClose.emit({ widget });
+            }
+          });
+
+          ann.on('widget-ready', ({ widget }: any) => {
+            if (widget === initWidget && this.onWidgetReady) {
+              this.onWidgetReady.emit({ widget });
+            }
+          });
+        }
+      });
     });
   }
 
@@ -220,29 +223,16 @@ export class AnnouncekitComponent implements AfterViewInit {
     return this.withWidget((widget: any) => widget.state.ui.unreadCount);
   }
 
+  instance(): any {
+    return this.withWidget((widget: any) => widget);
+  }
 
-  private isEquivalent(a: any, b: any): boolean {
-    // Create arrays of property names
-    const aProps = Object.getOwnPropertyNames(a || {});
-    const bProps = Object.getOwnPropertyNames(b || {});
+  open() {
+    this.withWidget((widget: any) => widget.open());
+  }
 
-    // If number of properties is different,
-    // objects are not equivalent
-    if (aProps.length !== bProps.length) {
-      return false;
-    }
-
-    for (const propName of aProps) {
-      // If values of same property are not equal,
-      // objects are not equivalent
-      if (a[propName] !== b[propName]) {
-        return false;
-      }
-    }
-
-    // If we made it this far, objects
-    // are considered equivalent
-    return true;
+  close() {
+    this.withWidget((widget: any) => widget.close());
   }
 
   private isString(obj): boolean {
