@@ -7,6 +7,7 @@
     "build": "ng build",
     "build-lib": "ng build announcekit-angular",
     "watch": "ng build --watch --configuration development",
+    "publish": "cd ./dist/announcekit-angular && npm publish",
     "test": "ng test"
   },
   "private": true,
