@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "ng build announcekit",
-    "publish": "cd ./dist/announcekit && npm publish"
+    "publish": "cd ./dist/announcekit && npm publish --tag $(node --eval=\"process.stdout.write(require('./package.json').version)\")-lts"
   },
   "dependencies": {
   },
