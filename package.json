@@ -1,14 +1,13 @@
 {
   "name": "announcekit-angular-module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "announcekit",
   "license": "MIT",
   "scripts": {
     "build": "ng build announcekit",
     "publish": "cd ./dist/announcekit && npm publish --tag $(node --eval=\"process.stdout.write(require('./package.json').version)\")-lts"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.24",
     "@angular-devkit/build-ng-packagr": "~0.800.6",
