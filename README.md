@@ -6,7 +6,7 @@ The easiest way to use AnnounceKit widgets in your Angular apps (>=4.2.0).
 [CodeSandbox Demo](https://codesandbox.io/s/announcekit-angular-u4nxq)
 
 [Documentation](https://announcekit.app/docs/angular)
-
+______
 ## Installation
 
 ```sh
@@ -35,7 +35,7 @@ export class AppModule { }
 
 app.component.html
 ```html
-<announcekit [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8">
+<announcekit [user]="user" [data]="data"  widget="https://announcekit.co/widgets/v2/3xdhio">
     What's new
 </announcekit>
 ```
@@ -52,7 +52,24 @@ Common props you may want to specify include:
 - `user` - User properties (for user tracking)
 - `data` - Segmentation data
 - `lang` - Language selector
+- `labels` -  In case you want to filter and display posts under a specific label or tag.
+- `user_token` - JWT setup: https://announcekit.app/docs/jwt
 - `onWidgetOpen` - Called when the widget is opened.
 - `onWidgetClose` - Called when the widget is closed.
 - `onWidgetUnread` - Called when unread post count of widget has been updated.
 - `onWidgetReady` - Called when the widget is ready for the interaction
+
+## API
+
+You can use ViewChild to access the widget instance and call control functions
+
+- `open()`
+- `close()`
+- `unread()`
+- `instance()`
+
+app.component.html
+```html
+<announcekit #ankRef [user]="user" [data]="data"  widget="https://announcekit.app/widgets/v2/2TrvK8"></announcekit>
+<a @click="() => ankRef.open()">What's New</a>
+```
