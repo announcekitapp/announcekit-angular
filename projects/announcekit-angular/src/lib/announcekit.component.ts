@@ -42,7 +42,7 @@ export class AnnouncekitComponent implements AfterViewInit {
       this._data = undefined;
     }
     else {
-      if (value) {
+      if (!value) {
         this._data = undefined;
       } else {
         this._data = Object.assign({}, value);
