@@ -73,7 +73,7 @@ export class AnnouncekitComponent implements AfterViewInit {
 
   private propsValid: boolean = true;
   private _user: User;
-  private _data: Data;
+  private _data: Data = {};
   public className: string;
 
   public widgetInstance: any;
